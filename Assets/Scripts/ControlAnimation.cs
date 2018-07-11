@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +30,7 @@ using System.Linq;
     void Update()
     {
         anim.Play("HumanoidWalk", -1, scrubber.value / animationTotalLength);
+        animationTime = scrubber.value / animationTotalLength;
     }
     
     public void AutoPlay()

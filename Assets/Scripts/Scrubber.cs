@@ -75,6 +75,7 @@ public class Scrubber : MonoBehaviour
 
         fingerDown = isPress;
 
+        //Splitting into horizontal and vertical options. Could be slightly optimised
         if (scrubberDirection == ScrubberDirection.HORIZONTAL)
         {
             dragInertia = new Vector3(dragInertia.x / friction, 0, 0); // Apply friction to slow down movement
