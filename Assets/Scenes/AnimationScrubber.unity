@@ -1270,22 +1270,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08aa2ddc8fc37d408416ae2765e359e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mousePos: {x: 0, y: 0, z: 0}
-  deltaMousePos: {x: 0, y: 0, z: 0}
-  dragInertia: {x: 0, y: 0, z: 0}
-  isDrag: 0
-  isPress: 0
-  isDragOrSwipe: 1
-  max: 100
+  scrubberDirection: 0
+  max: 1
   sensitivity: 0.01
   friction: 1.06
   value: 0
-  normalizedValue: 0
-  testAnim: {fileID: 0}
-  rotateTransform: {fileID: 0}
-  rotateValue: 0
-  rotateSensitivity: 0.01
-  rotateFriction: 1.04
 --- !u!114 &755803363
 MonoBehaviour:
   m_ObjectHideFlags: 0

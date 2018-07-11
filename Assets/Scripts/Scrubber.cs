@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ScrubberDirection
+{
+    HORIZONTAL,
+    VERTICAL
+}
 public class Scrubber : MonoBehaviour
 {
-	Vector3 mousePos;
+    #region private variables
+    Vector3 mousePos;
 	Vector3 deltaMousePos;
 	Vector3 prevMousePos;
 	Vector3 dragDist;
@@ -12,14 +18,17 @@ public class Scrubber : MonoBehaviour
 	bool isDrag = false;
 	bool isPress = false;
     bool fingerDown = false;
-	public float max = 100f;            //The length of the animation 
 	float min = 0f;
 	float maxVel = 0.1f;                 //The min velocity of the mouse drag
 	float minVel = -0.1f;                //The max velocity of the mouse drag
-	public float sensitivity = 0.01f;   //How sensitive the movement is
+    #endregion
+
+    public ScrubberDirection scrubberDirection; //The screen direction we want to scrub
+    public float max = 100f;            //The length of the animation
+    public float sensitivity = 0.01f;   //How sensitive the movement is
 	public float friction = 1.06f;      //The amount of slide 
-	public float value;                 //The time of the animation
-	public float normalizedValue;       //The normalized value of value
+    [HideInInspector]
+    public float value;                 //The time of the animation
 
     void Update ()
     {
@@ -43,8 +52,10 @@ public class Scrubber : MonoBehaviour
             { // is Dragging
                 isDrag = true;
 
-				// switch between horizontal and vertical drag
-				if (Mathf.Abs (deltaMousePos.y) > Mathf.Abs (deltaMousePos.x)) {
+                dragDist = new Vector3(0, deltaMousePos.y * sensitivity, 0);
+
+                // switch between horizontal and vertical drag
+                if (Mathf.Abs (deltaMousePos.y) > Mathf.Abs (deltaMousePos.x)) {
 					dragDist = new Vector3(0, deltaMousePos.y * sensitivity, 0);
 				} else {
 					dragDist = new Vector3(deltaMousePos.x * sensitivity, 0 , 0);
@@ -64,14 +75,26 @@ public class Scrubber : MonoBehaviour
 
         fingerDown = isPress;
 
-		dragInertia = new Vector3(0, dragInertia.y / friction, 0); // Apply friction to slow down movement
-        if (isDrag)
+        if (scrubberDirection == ScrubberDirection.HORIZONTAL)
         {
-            value += Mathf.Clamp(dragInertia.y, minVel, maxVel);
-            value = Mathf.Clamp(value, min, max);
-            float range = max - min;
-            normalizedValue = (value - min) / range;
-		}
+            dragInertia = new Vector3(dragInertia.x / friction, 0, 0); // Apply friction to slow down movement
+            if (isDrag)
+            {
+                value += Mathf.Clamp(dragInertia.x, minVel, maxVel);
+                value = Mathf.Clamp(value, min, max);
+                float range = max - min;
+            }
+        }
+        else
+        {
+            dragInertia = new Vector3(0, dragInertia.y / friction, 0); // Apply friction to slow down movement
+            if (isDrag)
+            {
+                value += Mathf.Clamp(dragInertia.y, minVel, maxVel);
+                value = Mathf.Clamp(value, min, max);
+                float range = max - min;
+            }
+        }
 	}
 
 }
