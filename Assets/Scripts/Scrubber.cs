@@ -29,6 +29,8 @@ public class Scrubber : MonoBehaviour
 	public float friction = 1.06f;      //The amount of slide 
     [HideInInspector]
     public float value;                 //The time of the animation
+    [HideInInspector]
+    public float normalizedValue;       //The normalized value of value
 
     void Update ()
     {
@@ -84,6 +86,7 @@ public class Scrubber : MonoBehaviour
                 value += Mathf.Clamp(dragInertia.x, minVel, maxVel);
                 value = Mathf.Clamp(value, min, max);
                 float range = max - min;
+                normalizedValue = (value - min) / range;
             }
         }
         else
@@ -94,6 +97,7 @@ public class Scrubber : MonoBehaviour
                 value += Mathf.Clamp(dragInertia.y, minVel, maxVel);
                 value = Mathf.Clamp(value, min, max);
                 float range = max - min;
+                normalizedValue = (value - min) / range;
             }
         }
 	}
