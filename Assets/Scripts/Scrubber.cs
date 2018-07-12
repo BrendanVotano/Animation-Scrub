@@ -9,7 +9,7 @@ public enum ScrubberDirection
 }
 public class Scrubber : MonoBehaviour
 {
-    #region private variables
+    #region hidden variables
     Vector3 mousePos;
 	Vector3 deltaMousePos;
 	Vector3 prevMousePos;
@@ -18,20 +18,22 @@ public class Scrubber : MonoBehaviour
 	bool isDrag = false;
 	bool isPress = false;
     bool fingerDown = false;
-	float min = 0f;
+	float minAnimTime = 0f;
 	float maxVel = 0.1f;                 //The min velocity of the mouse drag
 	float minVel = -0.1f;                //The max velocity of the mouse drag
-    #endregion
-
-    public ScrubberDirection scrubberDirection; //The screen direction we want to scrub
-    public float max = 100f;            //The length of the animation
-    public float sensitivity = 0.01f;   //How sensitive the movement is
-	public float friction = 1.06f;      //The amount of slide 
+    [HideInInspector]
+    public float maxAnimTime = 100f;    //The length of the animation
     [HideInInspector]
     public float value;                 //The time of the animation
     [HideInInspector]
     public float normalizedValue;       //The normalized value of value
+    #endregion
 
+    public ScrubberDirection scrubberDirection; //The screen direction we want to scrub
+    public float sensitivity = 0.01f;   //How sensitive the movement is
+	public float friction = 1.06f;      //The amount of slide 
+    
+    
     void Update ()
     {
         mousePos = Input.mousePosition; //Gets our mouse input
@@ -84,9 +86,9 @@ public class Scrubber : MonoBehaviour
             if (isDrag)
             {
                 value += Mathf.Clamp(dragInertia.x, minVel, maxVel);
-                value = Mathf.Clamp(value, min, max);
-                float range = max - min;
-                normalizedValue = (value - min) / range;
+                value = Mathf.Clamp(value, minAnimTime, maxAnimTime);
+                float range = maxAnimTime - minAnimTime;
+                normalizedValue = (value - minAnimTime) / range;
             }
         }
         else
@@ -95,11 +97,16 @@ public class Scrubber : MonoBehaviour
             if (isDrag)
             {
                 value += Mathf.Clamp(dragInertia.y, minVel, maxVel);
-                value = Mathf.Clamp(value, min, max);
-                float range = max - min;
-                normalizedValue = (value - min) / range;
+                value = Mathf.Clamp(value, minAnimTime, maxAnimTime);
+                float range = maxAnimTime - minAnimTime;
+                normalizedValue = (value - minAnimTime) / range;
             }
         }
 	}
+
+    public void UpdateMaxAnimTime(float newMax)
+    {
+        maxAnimTime = newMax;
+    }
 
 }
