@@ -102,7 +102,7 @@ public class Scrubber : MonoBehaviour
                 normalizedValue = (value - minAnimTime) / range;
             }
         }
-	}
+    }
 
     public void UpdateMaxAnimTime(float newMax)
     {

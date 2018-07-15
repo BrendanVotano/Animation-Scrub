@@ -14,10 +14,9 @@ using System.Linq;
     public List<AnimationClip> allAnimations = new List<AnimationClip>();
     [HideInInspector]
     public string currentAnimationName;
+    int loopCount = 1;   //The amount of loops we want this animation to play
 
     public Animator anim;       //The Animator we wish to control
-    [Range(1, 5)]
-    public int loopCount = 1;   //The amount of loops we want this animation to play
     public bool automatic;      //TODO for auto play
     
     void Start()
@@ -30,7 +29,7 @@ using System.Linq;
             allAnimations.Add(clip);
         }
         currentAnimationName = allAnimations[0].name;
-        scrubber.UpdateMaxAnimTime(allAnimations[0].length);
+        scrubber.UpdateMaxAnimTime(allAnimations[0].length * loopCount);
     }
 
     void Update()
@@ -40,17 +39,23 @@ using System.Linq;
         animationTime = scrubber.value / animationTotalLength;
     }
 
-    public void UpdateAnimationTime(string newName)
+    public void UpdateAnimationTime(string newName, int newLoopCount)
     {
         currentAnimationName = newName;
+        loopCount = newLoopCount;
         foreach (AnimationClip clip in allAnimations)
         {
             if (clip.name == currentAnimationName)
             {
                 animationTotalLength = clip.length;
-                scrubber.UpdateMaxAnimTime(animationTotalLength);
+                scrubber.UpdateMaxAnimTime(animationTotalLength * loopCount);
             }
         }
+    }
+
+    public void UpdateAnimationLoops(int newLoopCount)
+    {
+        loopCount = newLoopCount;
     }
     
     //TODO

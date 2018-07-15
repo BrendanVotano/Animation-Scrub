@@ -13,6 +13,7 @@ public class UIOverlay : MonoBehaviour {
     public Slider horizontalSlider;
     public Slider verticalSlider;
     public Dropdown dropdown;
+    public Dropdown loopCount;
 
     // Use this for initialization
     void Start ()
@@ -39,9 +40,11 @@ public class UIOverlay : MonoBehaviour {
     public void ChangeAnimation()
     {
         int dropdownValue = dropdown.value;
+        int loopValue = loopCount.value;
         //controlAnimation.currentAnimationName = dropdown.options[dropdownValue].text;
-        controlAnimation.UpdateAnimationTime(dropdown.options[dropdownValue].text);
+        controlAnimation.UpdateAnimationTime(dropdown.options[dropdownValue].text, loopCount.value + 1);
     }
+    
 
     void Update()
     {
